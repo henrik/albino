@@ -41,6 +41,7 @@
 # Chris Wanstrath // chris@ozmm.org 
 #         GitHub // http://github.com
 #
+require 'rubygems'
 require 'open4'
 
 class Albino
@@ -79,7 +80,6 @@ class Albino
 end
 
 if $0 == __FILE__
-  require 'rubygems'
   require 'test/spec'
   require 'mocha'
   begin require 'redgreen'; rescue LoadError; end
