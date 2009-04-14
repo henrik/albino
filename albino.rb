@@ -61,7 +61,7 @@ class Albino
 
   def initialize(target, lexer = :text, format = :html)
     @target  = File.exists?(target) ? File.read(target) : target rescue target
-    @options = { :l => lexer, :f => format }
+    @options = { :l => lexer, :f => format, :O => 'encoding=utf-8' }
   end
 
   def execute(command)
@@ -95,17 +95,22 @@ if $0 == __FILE__
 
     specify "defaults to text" do
       syntaxer = Albino.new(__FILE__)
-      syntaxer.expects(:execute).with("#{Albino.bin} -f html -l text").returns(true)
+      syntaxer.expects(:execute).with("#{Albino.bin} -f html -l text -O encoding=utf-8").returns(true)
       syntaxer.colorize
     end
 
     specify "accepts options" do
-      @syntaxer.expects(:execute).with("#{Albino.bin} -f html -l ruby").returns(true)
+      @syntaxer.expects(:execute).with("#{Albino.bin} -f html -l ruby -O encoding=utf-8").returns(true)
       @syntaxer.colorize
     end
 
     specify "works with strings" do
       syntaxer = Albino.new('class New; end', :ruby)
+      assert_match %r(highlight), syntaxer.colorize
+    end
+    
+    specify "works with UTF-8 strings" do
+      syntaxer = Albino.new('class New; "smörgåsbord"; end', :ruby)
       assert_match %r(highlight), syntaxer.colorize
     end
 
