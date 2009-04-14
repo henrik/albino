@@ -46,6 +46,10 @@ require 'open4'
 
 class Albino
   @@bin = Rails.development? ? 'pygmentize' : '/usr/bin/pygmentize' rescue 'pygmentize'
+  
+  def self.bin
+    @@bin
+  end
 
   def self.bin=(path)
     @@bin = path
@@ -91,12 +95,12 @@ if $0 == __FILE__
 
     specify "defaults to text" do
       syntaxer = Albino.new(__FILE__)
-      syntaxer.expects(:execute).with('pygmentize -f html -l text').returns(true)
+      syntaxer.expects(:execute).with("#{Albino.bin} -f html -l text").returns(true)
       syntaxer.colorize
     end
 
     specify "accepts options" do
-      @syntaxer.expects(:execute).with('pygmentize -f html -l ruby').returns(true)
+      @syntaxer.expects(:execute).with("#{Albino.bin} -f html -l ruby").returns(true)
       @syntaxer.colorize
     end
 
