@@ -114,6 +114,11 @@ if $0 == __FILE__
       assert_match %r(highlight), syntaxer.colorize
     end
 
+    specify "works with UTF-8 files" do
+      syntaxer = Albino.new(__FILE__)
+      assert_match %r(highlight), syntaxer.colorize
+    end
+
     specify "aliases to_s" do
       assert_equal @syntaxer.colorize, @syntaxer.to_s
     end
